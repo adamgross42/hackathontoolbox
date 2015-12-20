@@ -517,21 +517,9 @@
 
     <footer>
       <div class="container">
-        <div id="email_alert" class="alert fade in alert-dismissible" role="alert" style="display: none;">
-          <button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-          <span id="email_form_result"></span>
-        </div>
-        <form id="email_form" role="form">
-          <div class="input-group">
-            <input id="email_input" type="text" class="form-control" placeholder="Sign up to receive updates" type="email" required>
-            <span class="input-group-btn">
-              <button class="btn btn-success" type="submit">Sign up</button>
-            </span>
-          </div>
-        </form>
         <div id="copyright">
           <p class="pull-right"><a href="#">Back to top</a></p>
-          <p>&copy; <?php echo date("Y"); ?> <img src="ag.svg" height="14px" /> &middot; <a href="" onClick="$('#feedback_modal').modal('show'); return false;">Feedback</a></p>
+          <p>&copy; <?php echo date("Y"); ?> <img src="ag.svg" height="14px" /> &middot; <a href="https://github.com/adamgross42/hackathontoolbox/issues" target="_blank">Submit Ideas</a> &middot; <a href="https://twitter.com/hacktoolbox" target="_blank">Subscribe to Updates</a></p>
         </div>
       </div>
     </footer>
@@ -627,92 +615,6 @@
         Mousetrap.bind('down', function() { jumpToActive('down'); });
         Mousetrap.bind('right', function() { jumpToActive('down'); });
       });
-
-      $('#email_input').focus(function () {
-        $('#email_input').attr('placeholder','Email address');
-      });
-
-      $('#email_input').focusout(function () {
-        $('#email_input').attr('placeholder','Sign up to receive updates');
-      });
-
-      $('#email_form').submit(function(event) {
-        ga('send', 'event', 'email_form', 'submitted');
-        $.ajax({
-          url: '/signup.php',
-          type: 'POST',
-          data: {
-            email: $('#email_input').val(),
-          },
-          dataType: 'json',
-          success: function(result) {
-            if (!result.error) {
-              $('#email_form').hide();
-              $('#email_form_result').text(result.message);
-              $('#email_alert').removeClass('alert-danger');
-              $('#email_alert').addClass('alert-success');
-              $('#email_alert').show();
-            } else {
-              $('#email_form_result').text(result.message);
-              $('#email_alert').removeClass('alert-success');
-              $('#email_alert').addClass('alert-danger');
-              $('#email_alert').show();
-            }
-          },
-          error: function(error) {
-            $('#email_form_result').text('Could not reach server: ' + error.message);
-            $('#email_alert').removeClass('alert-success');
-            $('#email_alert').addClass('alert-danger');
-            $('#email_alert').show();
-          },
-        });
-
-        // Prevent page refresh
-        event.preventDefault();
-      });
-
-      $('#email_alert .close').click(function(e) {
-          $('#email_alert').hide();
-      });
-
-      $('#feedback_submit').click(function(event) {
-        ga('send', 'event', 'feedback_form', 'submitted');
-        $.ajax({
-          url: '/feedback.php',
-          type: 'POST',
-          data: {
-            feedback: $('#feedback_text').val(),
-          },
-          dataType: 'json',
-          success: function(result) {
-            if (!result.error) {
-              $('#feedback_submit').hide();
-              $('#feedback_form_result').text(result.message);
-              $('#feedback_form_result').removeClass('text-danger');
-              $('#feedback_form_result').addClass('text-success');
-              $('#feedback_close').show();
-            } else {
-              $('#feedback_form_result').text(result.message);
-              $('#feedback_form_result').removeClass('text-success');
-              $('#feedback_form_result').addClass('text-danger');
-            }
-          },
-          error: function(error) {
-            $('#feedback_form_result').text('Could not reach server: ' + error.message);
-            $('#feedback_form_result').removeClass('text-success');
-            $('#feedback_form_result').addClass('text-danger');
-          },
-        });
-      });
-
-      $('#feedback_modal').on('show.bs.modal', function (e) {
-        $('#feedback_text').val('');
-        $('#feedback_form_result').text('');
-        $('#feedback_form_result').removeClass('text-success');
-        $('#feedback_form_result').removeClass('text-danger');
-        $('#feedback_submit').show();
-        $('#feedback_close').hide();
-      })
     </script>
 
   </body>
